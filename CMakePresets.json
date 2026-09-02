@@ -8,7 +8,8 @@
       "generator": "Ninja",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "${sourceDir}/conan_provider.cmake"
       }
     },
     {
@@ -19,7 +20,8 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_CXX_FLAGS_RELEASE": "-mwindows"
+        "CMAKE_CXX_FLAGS_RELEASE": "-mwindows",
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "${sourceDir}/conan_provider.cmake"
       }
     }
   ]
