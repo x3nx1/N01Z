@@ -4,11 +4,28 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
-
-
 include_directories(.)
 find_package(glfw3 REQUIRED)
-add_executable(${PROJECT_NAME} noeyz.cpp gl.c)
+add_executable(${PROJECT_NAME} noeyz.cpp gl.c
+        system.cpp
+        system.h
+        afx.cpp
+        afx.h
+        input.cpp
+        input.h
+        net.cpp
+        net.h
+        netds.cpp
+        netds.h
+        gfx.cpp
+        gfx.h
+        negame.cpp
+        negame.h
+        nemenu.cpp
+        nemenu.h
+        nedata.cpp
+        nedata.h
+)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 
