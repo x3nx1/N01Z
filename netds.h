@@ -5,10 +5,12 @@
 #ifndef N01Z_NETDS_H
 #define N01Z_NETDS_H
 
-
-class NetDS
+namespace necoresystems
 {
-};
+    class NetDS
+    {
+    };
+}
 
 
 #endif //N01Z_NETDS_H

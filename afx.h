@@ -5,10 +5,12 @@
 #ifndef N01Z_AFX_H
 #define N01Z_AFX_H
 
-
-class AFX
+namespace necoresystems
 {
-};
+    class AFX
+    {
+    };
+}
 
 
 #endif //N01Z_AFX_H

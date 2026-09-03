@@ -5,10 +5,12 @@
 #ifndef N01Z_NET_H
 #define N01Z_NET_H
 
-
-class Net
+namespace necoresystems
 {
-};
+    class Net
+    {
+    };
+}
 
 
 #endif //N01Z_NET_H

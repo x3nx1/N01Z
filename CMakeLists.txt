@@ -25,6 +25,16 @@ add_executable(${PROJECT_NAME} noeyz.cpp gl.c
         nemenu.h
         nedata.cpp
         nedata.h
+        player.cpp
+        player.h
+        arena.cpp
+        arena.h
+        menu.cpp
+        menu.h
+        item.cpp
+        item.h
+        ui.cpp
+        ui.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)

@@ -5,10 +5,11 @@
 #ifndef N01Z_INPUT_H
 #define N01Z_INPUT_H
 
-
-class Input
+namespace necoresystems
 {
-};
-
+    class Input
+    {
+    };
+}
 
 #endif //N01Z_INPUT_H

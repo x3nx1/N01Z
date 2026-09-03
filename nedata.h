@@ -5,10 +5,12 @@
 #ifndef N01Z_NEDATA_H
 #define N01Z_NEDATA_H
 
-
-class NEData
+namespace negamesystems
 {
-};
+    class NEData
+    {
+    };
+}
 
 
 #endif //N01Z_NEDATA_H

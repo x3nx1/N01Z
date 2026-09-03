@@ -5,10 +5,12 @@
 #ifndef N01Z_SYSTEM_H
 #define N01Z_SYSTEM_H
 
-
-class System
+namespace necoresystems
 {
-};
+    class System
+    {
+    };
+}
 
 
 #endif //N01Z_SYSTEM_H

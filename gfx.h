@@ -5,10 +5,11 @@
 #ifndef N01Z_GFX_H
 #define N01Z_GFX_H
 
-
-class GFX
+namespace necoresystems
 {
-};
-
+    class GFX
+    {
+    };
+}
 
 #endif //N01Z_GFX_H
