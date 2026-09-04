@@ -35,6 +35,7 @@ add_executable(${PROJECT_NAME} noeyz.cpp gl.c
         item.h
         ui.cpp
         ui.h
+        debug.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)

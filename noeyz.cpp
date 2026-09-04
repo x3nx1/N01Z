@@ -1,9 +1,8 @@
 #include <cstdint>
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
 #include <iostream>
+#include <windows.h>
+#include <gfx.h>
 
-#include "windows.h"
 
 int main();
 
@@ -15,5 +14,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 int main()
 {
     std::cout << "Starting N01Z..." << std::endl;
-    return 0;
+
+    using namespace necoresystems;
+    int32_t status;
+
+    GFX gfx{1280, 720, "N01Z", &status};
+
+
+    gfx.display(&status);
+
+
+
+    return status;
 }
