@@ -5,6 +5,7 @@
 #include <debug.h>
 #include <thread>
 #include <cstdint>
+#include <atomic>
 
 namespace necoresystems
 {
@@ -25,8 +26,8 @@ namespace necoresystems
         [[nodiscard]] int32_t getWindowHeight() const;
 
     private:
-        GLFWwindow *wnd{nullptr};
-        bool active{false};
+        std::atomic<GLFWwindow*> wnd{nullptr};
+        std::atomic<bool> active{false};
     };
 }
 

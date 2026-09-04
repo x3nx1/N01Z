@@ -13,7 +13,7 @@ necoresystems::GFX::GFX(int32_t initialWindowWidth, int32_t initialWindowHeight,
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Potential MacOS requirement
 
-    this->wnd = glfwCreateWindow(initialWindowWidth, initialWindowHeight, initialWindowTitle, NULL, NULL);
+    this->wnd = glfwCreateWindow(initialWindowWidth, initialWindowHeight, initialWindowTitle, nullptr, nullptr);
     glfwMakeContextCurrent(nullptr);
 
     if(wnd == nullptr)
@@ -38,10 +38,10 @@ void necoresystems::GFX::display(int32_t *const statusAsync)
         [this, statusAsync]()
         {
             *statusAsync = 0;
-            this->active = true;
+            this->active.store(true);
 
 
-            glfwMakeContextCurrent(this->wnd);
+            glfwMakeContextCurrent(this->wnd.load());
 
             if(!gladLoadGL((GLADloadfunc)glfwGetProcAddress))
             {
@@ -52,16 +52,16 @@ void necoresystems::GFX::display(int32_t *const statusAsync)
 
             glViewport(0, 0, this->getWindowWidth(), this->getWindowHeight());
 
-            glfwSetFramebufferSizeCallback(this->wnd, [](GLFWwindow *wnd, int32_t windowWidth, int32_t windowHeight)
+            glfwSetFramebufferSizeCallback(this->wnd.load(), [](GLFWwindow *wnd, int32_t windowWidth, int32_t windowHeight)
             {
                 glViewport(0, 0, windowWidth, windowHeight);
             });
 
-            while(this->active)
+            while(this->active.load(std::memory_order_relaxed))
             {
-                glClearColor(0.2f,0.2f,0.8f,1.0f);
+                glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
-                glfwSwapBuffers(this->wnd);
+                glfwSwapBuffers(this->wnd.load());
                 // todo: graphics loop
             }
         }
@@ -69,15 +69,19 @@ void necoresystems::GFX::display(int32_t *const statusAsync)
     };
 
 
-    while(!glfwWindowShouldClose(this->wnd))
+    while(!glfwWindowShouldClose(this->wnd.load(std::memory_order_relaxed)))
     {
         glfwPollEvents();
     }
 
-    this->active = false;
+    this->active.store(false);
 
     gfxThread.join();
+
+    glfwDestroyWindow(this->wnd.load());
+
     debug::log("Graphics thread exit.");
+
 }
 
 int32_t necoresystems::GFX::getWindowWidth() const
