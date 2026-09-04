@@ -20,8 +20,7 @@ int main()
 
     GFX gfx{1280, 720, "N01Z", &status};
 
-
-    gfx.display(&status);
+    gfx.display();
 
 
 

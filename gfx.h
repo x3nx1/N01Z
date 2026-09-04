@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <debug.h>
 #include <thread>
-#include <cstdint>
 #include <atomic>
+#include <cstdint>
 
 namespace necoresystems
 {
@@ -19,15 +19,18 @@ namespace necoresystems
         ~GFX();
 
 
-        void display(int32_t *statusAsync);
+        void display(std::atomic<int32_t> &statusAsync);
+        void display();
 
         [[nodiscard]] int32_t getWindowWidth() const;
 
         [[nodiscard]] int32_t getWindowHeight() const;
 
     private:
-        std::atomic<GLFWwindow*> wnd{nullptr};
+        std::atomic<GLFWwindow *> wnd{nullptr};
         std::atomic<bool> active{false};
+        static void draw();
+
     };
 }
 

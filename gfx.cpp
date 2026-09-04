@@ -1,5 +1,7 @@
 #include "gfx.h"
 
+#include "system.h"
+
 
 necoresystems::GFX::GFX(int32_t initialWindowWidth, int32_t initialWindowHeight,
                         const char *const initialWindowTitle, int32_t *const status)
@@ -31,13 +33,13 @@ necoresystems::GFX::~GFX()
     glfwTerminate();
 }
 
-void necoresystems::GFX::display(int32_t *const statusAsync)
+void necoresystems::GFX::display(std::atomic<int32_t> &statusAsync)
 {
     // start graphics thread
     std::thread gfxThread{
-        [this, statusAsync]()
+        [this, &statusAsync]()
         {
-            *statusAsync = 0;
+            statusAsync.store(0);
             this->active.store(true);
 
 
@@ -45,24 +47,32 @@ void necoresystems::GFX::display(int32_t *const statusAsync)
 
             if(!gladLoadGL((GLADloadfunc)glfwGetProcAddress))
             {
-                *statusAsync = 100;
+                statusAsync.store(100);
                 return;
             }
 
 
             glViewport(0, 0, this->getWindowWidth(), this->getWindowHeight());
 
-            glfwSetFramebufferSizeCallback(this->wnd.load(), [](GLFWwindow *wnd, int32_t windowWidth, int32_t windowHeight)
-            {
-                glViewport(0, 0, windowWidth, windowHeight);
-            });
+            glfwSetFramebufferSizeCallback(this->wnd.load(),
+                                           [](GLFWwindow *wnd, int32_t windowWidth, int32_t windowHeight)
+                                           {
+                                               glViewport(0, 0, windowWidth, windowHeight);
+                                           });
+
+            double prevTime{glfwGetTime()};
+
+            glClearColor(0.0375f, 0.15f, 0.1875f, 1.0f);
 
             while(this->active.load(std::memory_order_relaxed))
             {
-                glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
+                this->draw();
                 glfwSwapBuffers(this->wnd.load());
-                // todo: graphics loop
+
+                double time = glfwGetTime();
+                double frameTime = time - prevTime;
+                prevTime = time;
             }
         }
 
@@ -81,8 +91,14 @@ void necoresystems::GFX::display(int32_t *const statusAsync)
     glfwDestroyWindow(this->wnd.load());
 
     debug::log("Graphics thread exit.");
-
 }
+
+void necoresystems::GFX::display()
+{
+    std::atomic<int32_t> status{0};
+    this->display(status);
+}
+
 
 int32_t necoresystems::GFX::getWindowWidth() const
 {
@@ -96,4 +112,13 @@ int32_t necoresystems::GFX::getWindowHeight() const
     int32_t windowHeight = -1;
     glfwGetWindowSize(this->wnd, nullptr, &windowHeight);
     return windowHeight;
+}
+
+void necoresystems::GFX::draw()
+{
+    using engine = necoresystems::System;
+
+
+
+
 }
