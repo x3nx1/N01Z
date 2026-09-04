@@ -6,6 +6,7 @@
 #include <thread>
 #include <atomic>
 #include <cstdint>
+#include <vector>
 
 namespace necoresystems
 {
@@ -14,23 +15,23 @@ namespace necoresystems
     public:
         GFX() = delete;
 
-        GFX(int32_t initialWindowWidth, int32_t initialWindowHeight, const char *initialWindowTitle, int32_t *status);
+        ~GFX() = delete;
 
-        ~GFX();
+        static int32_t initialize(int32_t initialWindowWidth, int32_t initialWindowHeight,
+                                  const char *initialWindowTitle);
 
+        static void activate();
 
-        void display(std::atomic<int32_t> &statusAsync);
-        void display();
+        [[nodiscard]] static int32_t getWindowWidth();
 
-        [[nodiscard]] int32_t getWindowWidth() const;
+        [[nodiscard]] static int32_t getWindowHeight();
 
-        [[nodiscard]] int32_t getWindowHeight() const;
+        static void exit();
 
     private:
-        std::atomic<GLFWwindow *> wnd{nullptr};
-        std::atomic<bool> active{false};
-        static void draw();
+        inline static std::atomic<GLFWwindow *> window_s{nullptr};
 
+        static void draw(double frameTime);
     };
 }
 

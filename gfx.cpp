@@ -1,13 +1,10 @@
 #include "gfx.h"
-
 #include "system.h"
 
-
-necoresystems::GFX::GFX(int32_t initialWindowWidth, int32_t initialWindowHeight,
-                        const char *const initialWindowTitle, int32_t *const status)
+int32_t necoresystems::GFX::initialize(int32_t initialWindowWidth, int32_t initialWindowHeight,
+                                       const char *const initialWindowTitle)
 {
-    *status = -1;
-
+    // Initialization check
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
@@ -15,110 +12,100 @@ necoresystems::GFX::GFX(int32_t initialWindowWidth, int32_t initialWindowHeight,
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Potential MacOS requirement
 
-    this->wnd = glfwCreateWindow(initialWindowWidth, initialWindowHeight, initialWindowTitle, nullptr, nullptr);
-    glfwMakeContextCurrent(nullptr);
 
-    if(wnd == nullptr)
+    GFX::window_s.store(glfwCreateWindow(initialWindowWidth, initialWindowHeight, initialWindowTitle, nullptr,
+                                         nullptr));
+    glfwMakeContextCurrent(nullptr); // will be taken by spawned thread
+
+    if(GFX::window_s.load() == nullptr)
     {
         debug::err("GLFW - Unable to create window.");
-        glfwTerminate();
-        return;
+        return -1;
     }
 
-    *status = 0;
+    return 0;
 }
 
-necoresystems::GFX::~GFX()
-{
-    glfwTerminate();
-}
 
-void necoresystems::GFX::display(std::atomic<int32_t> &statusAsync)
+void necoresystems::GFX::activate()
 {
     // start graphics thread
     std::thread gfxThread{
-        [this, &statusAsync]()
+        []()
         {
-            statusAsync.store(0);
-            this->active.store(true);
-
-
-            glfwMakeContextCurrent(this->wnd.load());
+            glfwMakeContextCurrent(GFX::window_s.load());
 
             if(!gladLoadGL((GLADloadfunc)glfwGetProcAddress))
             {
-                statusAsync.store(100);
+                debug::err("GFX - failed to load GL.");
                 return;
             }
 
+            //
 
-            glViewport(0, 0, this->getWindowWidth(), this->getWindowHeight());
+            glViewport(0, 0, GFX::getWindowWidth(), GFX::getWindowHeight());
 
-            glfwSetFramebufferSizeCallback(this->wnd.load(),
+            glfwSetFramebufferSizeCallback(GFX::window_s.load(),
                                            [](GLFWwindow *wnd, int32_t windowWidth, int32_t windowHeight)
                                            {
                                                glViewport(0, 0, windowWidth, windowHeight);
                                            });
 
-            double prevTime{glfwGetTime()};
+            //
 
             glClearColor(0.0375f, 0.15f, 0.1875f, 1.0f);
 
-            while(this->active.load(std::memory_order_relaxed))
+            double prevTime{glfwGetTime()};
+            double frameTime{0};
+            while(!glfwWindowShouldClose(GFX::window_s.load(std::memory_order_relaxed)))
             {
                 glClear(GL_COLOR_BUFFER_BIT);
-                this->draw();
-                glfwSwapBuffers(this->wnd.load());
+                GFX::draw(frameTime);
+                glfwSwapBuffers(GFX::window_s.load());
 
-                double time = glfwGetTime();
-                double frameTime = time - prevTime;
+                //
+
+                const double time = glfwGetTime();
+                frameTime = time - prevTime;
                 prevTime = time;
             }
         }
 
     };
 
-
-    while(!glfwWindowShouldClose(this->wnd.load(std::memory_order_relaxed)))
+    while(!glfwWindowShouldClose(GFX::window_s.load(std::memory_order_relaxed)))
     {
         glfwPollEvents();
     }
 
-    this->active.store(false);
-
     gfxThread.join();
-
-    glfwDestroyWindow(this->wnd.load());
+    glfwDestroyWindow(GFX::window_s.load());
+    glfwTerminate();
 
     debug::log("Graphics thread exit.");
 }
 
-void necoresystems::GFX::display()
-{
-    std::atomic<int32_t> status{0};
-    this->display(status);
-}
-
-
-int32_t necoresystems::GFX::getWindowWidth() const
+int32_t necoresystems::GFX::getWindowWidth()
 {
     int32_t windowWidth = -1;
-    glfwGetWindowSize(this->wnd, &windowWidth, nullptr);
+    glfwGetWindowSize(GFX::window_s.load(), &windowWidth, nullptr);
     return windowWidth;
 }
 
-int32_t necoresystems::GFX::getWindowHeight() const
+int32_t necoresystems::GFX::getWindowHeight()
 {
     int32_t windowHeight = -1;
-    glfwGetWindowSize(this->wnd, nullptr, &windowHeight);
+    glfwGetWindowSize(GFX::window_s.load(), nullptr, &windowHeight);
     return windowHeight;
 }
 
-void necoresystems::GFX::draw()
+void necoresystems::GFX::exit()
+{
+    glfwSetWindowShouldClose(GFX::window_s.load(), true);
+}
+
+
+void necoresystems::GFX::draw(double frameTime)
 {
     using engine = necoresystems::System;
-
-
-
-
 }

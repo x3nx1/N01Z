@@ -16,13 +16,9 @@ int main()
     std::cout << "Starting N01Z..." << std::endl;
 
     using namespace necoresystems;
-    int32_t status;
 
-    GFX gfx{1280, 720, "N01Z", &status};
+    GFX::initialize(1280, 720, "N01Z");
+    GFX::activate(); // blocking
 
-    gfx.display();
-
-
-
-    return status;
+    return 0;
 }
