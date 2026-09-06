@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <gfx.h>
 
+#include "nedata.h"
+
 
 int main();
 
@@ -13,12 +15,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 int main()
 {
-    std::cout << "Starting N01Z..." << std::endl;
+    debug::log("Starting N01Z...");
+
 
     using namespace necoresystems;
 
     GFX::initialize(1280, 720, "N01Z");
     GFX::activate(); // blocking
+
+    necoresystems::data::Map::constants con;
 
     return 0;
 }
