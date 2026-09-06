@@ -1,0 +1,37 @@
+template_type = 0
+
+[map]
+creator = "x3nx1"
+title = "N01Z Demo"
+description = "This is the default demo map."
+date_updated = 2026-09-06
+is_alpha_release = false
+##
+[map.constants]
+audio_track = "%default%"
+##
+[map.itemdata]
+#
+[[mitem]]
+item_name = "noscope"
+item_location = [300, 100]
+##
+[map.data]
+#
+[[mdata]]
+type = "quad"
+mode = 0
+verts = [[0, 0], [200, 0], [200, 300], [0, 250]]
+[[mdata]]
+type = "quad"
+mode = 0
+verts = [[200, 0], [800, 0], [800, 250], [200, 250]]
+[[mdata]]
+type = "quad"
+mode = 1
+verts = [[195, 75], [215, 75], [195, 175], [215, 175]]
+[[mdata]]
+type = "quad"
+mode = 1
+verts = [[400, 110], [400, 140], [650, 110], [650, 140]]
+### END ###
