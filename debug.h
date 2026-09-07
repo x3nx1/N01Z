@@ -5,13 +5,13 @@
 
 namespace debug
 {
-    inline void log(const std::string &logMessage)
+    inline void log(const std::string_view logMessage)
     {
         std::cout << logMessage << std::endl;
         // todo: log file implementation
     }
 
-    inline void err(const std::string &errMessage)
+    inline void err(const std::string_view errMessage)
     {
         std::cout << "ERROR: " << errMessage << std::endl;
         // todo: log file implementation
