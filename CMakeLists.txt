@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(.)
 find_package(glfw3 REQUIRED)
+find_package(tomlplusplus REQUIRED)
 add_executable(${PROJECT_NAME} noeyz.cpp gl.c
         system.cpp
         system.h
@@ -39,4 +40,5 @@ add_executable(${PROJECT_NAME} noeyz.cpp gl.c
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+target_link_libraries(${PROJECT_NAME} PRIVATE tomlplusplus::tomlplusplus)
 

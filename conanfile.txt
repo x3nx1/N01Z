@@ -1,8 +1,10 @@
 [requires]
 glfw/3.4
+tomlplusplus/3.4.0
 
 [generators]
 CMakeDeps
+CMakeConfigDeps
 CMakeToolchain
 
 [layout]
