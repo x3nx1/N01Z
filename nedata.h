@@ -2,6 +2,8 @@
 #define N01Z_NEDATA_H
 
 #include <cstdint>
+#include <toml++/toml.hpp>
+#include <debug.h>
 
 namespace necoresystems
 {
@@ -9,34 +11,39 @@ namespace necoresystems
     {
         struct Map
         {
-            struct constants
+            typedef struct Constants
             {
                 const char *audioTrack;
-            };
+            } constants;
 
-            struct mdata
+            typedef struct MData
             {
                 int16_t type;
                 int16_t mode;
                 const double **verts;
-            };
+            } mdata;
 
-            struct mitem
+            typedef struct MItem
             {
                 const char *itemName;
                 const double *location;
-            };
+            } mitem;
 
-            const char *creator;
-            const char *title;
-            const char *description;
-            const char *date;
-            bool isAlpha;
-            constants mapConstants;
-            mdata *mapData;
-            mitem *mapItems;
+            const char *creator{"%unset%"};
+            const char *title{"%unset%"};
+            const char *description{"%unset%"};
+            const char *date{"%unset%"};
+            bool isAlpha{true};
+            constants mapConstants{"%unset%"};
+            std::vector<mdata> mapData{};
+            std::vector<mitem> mapItems{};
         };
     };
+
+    namespace filesystem
+    {
+        bool loadMap(const char *file, data::Map &targetMap);
+    }
 }
 
 
