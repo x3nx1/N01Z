@@ -4,7 +4,7 @@ template_type = 0
 creator = "x3nx1"
 title = "N01Z Demo"
 description = "This is the default demo map."
-date_updated = 2026-09-06
+date_updated = "07/09/2026"
 is_alpha_release = false
 ##
 [map.constants]

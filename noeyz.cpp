@@ -23,7 +23,6 @@ int main()
     GFX::initialize(1280, 720, "N01Z");
     GFX::activate(); // blocking
 
-    necoresystems::data::Map::constants con;
 
     return 0;
 }
