@@ -20,7 +20,7 @@ int main()
 
     using namespace necoresystems;
 
-    GFX::initialize(1280, 720, "N01Z");
+    GFX::initialize(1600, 900, "N01Z");
     GFX::activate(); // blocking
 
 
