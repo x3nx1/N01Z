@@ -12,26 +12,28 @@ audio_track = "%default%"
 ##
 [map.itemdata]
 #
-[[mitem]]
+[[map.itemdata.mitem]]
 item_name = "noscope"
-item_location = [300, 100]
+item_location = [300.0, 100.0]
+
+
 ##
 [map.data]
 #
-[[mdata]]
+[[map.data.mdata]]
 type = 4
 mode = 0
-verts = [[0, 0], [200, 0], [200, 300], [0, 250]]
-[[mdata]]
+verts = [[0.0, 0.0], [200.0, 0.0], [200.0, 300.0], [0.0, 250.0]]
+[[map.data.mdata]]
 type = 4
 mode = 0
-verts = [[200, 0], [800, 0], [800, 250], [200, 250]]
-[[mdata]]
+verts = [[200.0, 0.0], [800.0, 0.0], [800.0, 250.0], [200.0, 250.0]]
+[[map.data.mdata]]
 type = 4
 mode = 1
-verts = [[195, 75], [215, 75], [195, 175], [215, 175]]
-[[mdata]]
+verts = [[195.0, 75.0], [215.0, 75.0], [195.0, 175.0], [215.0, 175.0]]
+[[map.data.mdata]]
 type = 4
 mode = 1
-verts = [[400, 110], [400, 140], [650, 110], [650, 140]]
+verts = [[400.0, 110.0], [400.0, 140.0], [650.0, 110.0], [650.0, 140.0]]
 ### END ###

@@ -20,13 +20,13 @@ namespace necoresystems
             {
                 int32_t type;
                 int32_t mode;
-                const double *verts;
+                double verts[8]{};
             } mdata;
 
             typedef struct MItem
             {
                 const char *itemName;
-                const double *location;
+                double location[2]{};
             } mitem;
 
             const char *creator{"%unset%"};

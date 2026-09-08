@@ -109,8 +109,11 @@ bool necoresystems::filesystem::loadMap(const char *const file, data::Map &targe
 
                 // if data is there
 
-                const double itemLocationPair[2] = {itemLocationX->value_or(0.0), itemLocation->value_or(0.0)};
-                targetMap.mapItems.emplace_back(itemName->value_or("*Unnamed*"), itemLocationPair);
+                data::Map::mitem &mapItemElementItemData = targetMap.mapItems.emplace_back(
+                    itemName->value_or("*Unnamed*"));
+
+                mapItemElementItemData.location[0] = itemLocationX->value_or(0.0);
+                mapItemElementItemData.location[1] = itemLocationY->value_or(0.0);
             }
         } else
         {
@@ -172,12 +175,17 @@ bool necoresystems::filesystem::loadMap(const char *const file, data::Map &targe
                     continue;
                 }
 
-                const double vertsSquashed[8] = {
-                    verts[0][0], verts[0][1], verts[1][0], verts[1][1], verts[2][0], verts[2][1], verts[3][0],
-                    verts[3][1]
-                };
-                targetMap.mapData.emplace_back(mapDataElementType->value_or(4), mapDataElementMode->value_or(0),
-                                               vertsSquashed);
+                data::Map::mdata &mapDataElementData = targetMap.mapData.emplace_back(
+                    mapDataElementType->value_or(4), mapDataElementMode->value_or(0));
+
+                mapDataElementData.verts[0] = verts[0][0];
+                mapDataElementData.verts[1] = verts[0][1];
+                mapDataElementData.verts[2] = verts[1][0];
+                mapDataElementData.verts[3] = verts[1][1];
+                mapDataElementData.verts[4] = verts[2][0];
+                mapDataElementData.verts[5] = verts[2][1];
+                mapDataElementData.verts[6] = verts[3][0];
+                mapDataElementData.verts[7] = verts[3][1];
             }
         } else
         {
