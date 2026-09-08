@@ -18,9 +18,9 @@ namespace necoresystems
 
             typedef struct MData
             {
-                int16_t type;
-                int16_t mode;
-                const double **verts;
+                int32_t type;
+                int32_t mode;
+                const double *verts;
             } mdata;
 
             typedef struct MItem

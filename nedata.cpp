@@ -78,7 +78,7 @@ bool necoresystems::filesystem::loadMap(const char *const file, data::Map &targe
 
         // load these if applicable, otherwise ignore.
         array *mapItemDataElements = mapItemData->get_as<array>("mitem");
-        if(mapItemDataElements && (mapItemDataElements->size() > 0))
+        if(mapItemDataElements && !mapItemDataElements->empty())
         {
             for(size_t i = 0; i < mapItemDataElements->size(); i++)
             {
@@ -119,15 +119,65 @@ bool necoresystems::filesystem::loadMap(const char *const file, data::Map &targe
 
         array *mapDataElements = mapData->get_as<array>("mdata");
 
-        if(mapDataElements && (mapDataElements->size() > 0))
+        if(mapDataElements && !mapDataElements->empty())
         {
             for(int32_t i = 0; i < mapDataElements->size(); i++)
             {
-                //table *mapDataElementTable = mapDataElements->get_as<table>(i);
+                table *mapDataElementTable = mapDataElements->get_as<table>(i);
 
-                //
-                // TODO: implement map data loading here
-                //
+                array *mapDataElementVerts = mapDataElementTable->get_as<array>("verts");
+                if(!mapDataElementVerts)
+                {
+                    debug::err(
+                        "Failed to parse map template file: Unable to locate vertex data: 'verts' Maybe check array size.");
+                    return false;
+                }
+
+                double verts[4][2];
+
+
+                bool completeData = false;
+                for(size_t j = 0; j < mapDataElementVerts->size() || !(completeData = true); j++)
+                {
+                    array *mapDataElementVertPair = mapDataElementVerts->get_as<array>(j);
+                    if(!(mapDataElementVertPair && mapDataElementVertPair->size() == 2))
+                    {
+                        break; // invalid data - exit before end of loop, leaving completeData flag false
+                    }
+
+                    doublefield *vertPairX = mapDataElementVertPair->get_as<doublefield>(0);
+                    doublefield *vertPairY = mapDataElementVertPair->get_as<doublefield>(1);
+
+                    if(!(vertPairX && vertPairY))
+                    {
+                        break; // same as above
+                    }
+
+                    // valid pair:
+
+                    verts[j][0] = vertPairX->value_or(0.0); // default to origin
+                    verts[j][1] = vertPairY->value_or(0.0); // --
+                }
+
+                if(!completeData)
+                {
+                    continue;
+                }
+
+                intfield *mapDataElementType = mapDataElementTable->get_as<intfield>("type");
+                intfield *mapDataElementMode = mapDataElementTable->get_as<intfield>("mode");
+
+                if(!(mapDataElementType && mapDataElementMode))
+                {
+                    continue;
+                }
+
+                const double vertsSquashed[8] = {
+                    verts[0][0], verts[0][1], verts[1][0], verts[1][1], verts[2][0], verts[2][1], verts[3][0],
+                    verts[3][1]
+                };
+                targetMap.mapData.emplace_back(mapDataElementType->value_or(4), mapDataElementMode->value_or(0),
+                                               vertsSquashed);
             }
         } else
         {
