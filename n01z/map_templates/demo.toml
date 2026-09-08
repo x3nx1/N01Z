@@ -19,19 +19,19 @@ item_location = [300, 100]
 [map.data]
 #
 [[mdata]]
-type = "quad"
+type = 4
 mode = 0
 verts = [[0, 0], [200, 0], [200, 300], [0, 250]]
 [[mdata]]
-type = "quad"
+type = 4
 mode = 0
 verts = [[200, 0], [800, 0], [800, 250], [200, 250]]
 [[mdata]]
-type = "quad"
+type = 4
 mode = 1
 verts = [[195, 75], [215, 75], [195, 175], [215, 175]]
 [[mdata]]
-type = "quad"
+type = 4
 mode = 1
 verts = [[400, 110], [400, 140], [650, 110], [650, 140]]
 ### END ###
