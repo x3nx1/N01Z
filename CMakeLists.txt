@@ -38,7 +38,7 @@ add_executable(${PROJECT_NAME} noeyz.cpp gl.c
         ui.h
         debug.h
 )
-
+set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX ".debug")
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE tomlplusplus::tomlplusplus)
 
