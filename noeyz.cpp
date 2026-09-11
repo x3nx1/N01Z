@@ -20,9 +20,13 @@ int main()
 
     using namespace necoresystems;
 
+    data::Map map{};
+    filesystem::loadMap("../n01z/map_templates/demo.toml", map);
 
     GFX::initialize(1600, 900, "N01Z");
     GFX::activate(); // blocking
+
+
 
     return 0;
 }
