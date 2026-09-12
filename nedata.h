@@ -9,7 +9,7 @@ namespace necoresystems
 {
     namespace data
     {
-        struct Map
+        typedef struct Map
         {
             typedef struct Constants
             {
@@ -37,12 +37,12 @@ namespace necoresystems
             constants mapConstants{"%unset%"};
             std::vector<mdata> mapData{};
             std::vector<mitem> mapItems{};
-        };
+        } map;
     };
 
     namespace filesystem
     {
-        bool loadMap(const char *file, data::Map &targetMap);
+        bool loadMapFromTemplate(const char *file, data::Map &map);
     }
 }
 

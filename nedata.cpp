@@ -1,6 +1,6 @@
 #include "nedata.h"
 
-bool necoresystems::filesystem::loadMap(const char *const file, data::Map &targetMap)
+bool necoresystems::filesystem::loadMapFromTemplate(const char *const file, data::Map &map)
 {
     try
     {
@@ -109,7 +109,7 @@ bool necoresystems::filesystem::loadMap(const char *const file, data::Map &targe
 
                 // if data is there
 
-                data::Map::mitem &mapItemElementItemData = targetMap.mapItems.emplace_back(
+                data::Map::mitem &mapItemElementItemData = map.mapItems.emplace_back(
                     itemName->value_or("*Unnamed*"));
 
                 mapItemElementItemData.location[0] = itemLocationX->value_or(0.0);
@@ -175,7 +175,7 @@ bool necoresystems::filesystem::loadMap(const char *const file, data::Map &targe
                     continue;
                 }
 
-                data::Map::mdata &mapDataElementData = targetMap.mapData.emplace_back(
+                data::Map::mdata &mapDataElementData = map.mapData.emplace_back(
                     mapDataElementType->value_or(4), mapDataElementMode->value_or(0));
 
                 mapDataElementData.verts[0] = verts[0][0];
@@ -194,13 +194,13 @@ bool necoresystems::filesystem::loadMap(const char *const file, data::Map &targe
 
         // assign all values...
 
-        targetMap.creator = mapCreatorName->value_or("*Unknown*");
-        targetMap.title = mapTitle->value_or("*Untitled*");
-        targetMap.description = mapDescription->value_or("*Who knows?*");
-        targetMap.date = mapDateUpdated->value_or("*32/13/2500*");
-        targetMap.isAlpha = mapIsAlphaRelease->value_or(true);
+        map.creator = mapCreatorName->value_or("*Unknown*");
+        map.title = mapTitle->value_or("*Untitled*");
+        map.description = mapDescription->value_or("*Who knows?*");
+        map.date = mapDateUpdated->value_or("*32/13/2500*");
+        map.isAlpha = mapIsAlphaRelease->value_or(true);
         //
-        targetMap.mapConstants.audioTrack = mapAudioTrack->value_or("%default%");
+        map.mapConstants.audioTrack = mapAudioTrack->value_or("%default%");
         //
 
         //
